@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Angular Basics 101a</title> 
+<link href="css/main.css" rel="stylesheet" />
+<link rel="shortcut icon"   href="/favicon.ico"/>
+<!--
+if you are using yarn and have run yarn install then this next line replaces the line after the this comment
+<script type="text/javascript" src="/node_modules/angular-cookie-law/dist/angular-cookie-law.min.js"></script>  
+-->
+<link rel="stylesheet" href="/node_modules/angular-cookie-law/dist/angular-cookie-law.min.css">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">	 
+</head>
+
+<body ng-app="myApp" > 
+	<cookie-law-banner message="We use cookies to support some features!" policy-url="https://cookiesandyou.com/" 
+                    	policy-button="true"  
+						policy-text="Explain Cookies" 
+						decline-button="true"
+						decline-text="I am rejecting cookies"
+						>			
+	</cookie-law-banner>
+ 
+	<cookie-law-wait>
+ 			<div ng-view class="container">
+			</div>	
+	</cookie-law-wait>
+ 
+	<div nrz-lightify-messages position="top-right"></div>
+</body>
+<!-- cdn(s) -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script> 		 
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.js" ></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-route.js" ></script>	
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-resource.js" ></script>	
+<script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.14.3.min.js"></script>   <!-- ui-tabs etc -->
+<!-- locally stored scripts on the server -->
+<script type="text/javascript" src="/js_thirdparty/notify/bootstrap-notify.js"></script> 	 	
+<script type="text/javascript" src="/js_thirdparty/notify/angular-lightify.js"></script>   
+<script src="/node_modules/angular-cookie-law/dist/angular-cookie-law.min.js"></script>  
+
+<script type="text/javascript" src="/js/app.js"></script>	
+</html>
+ 

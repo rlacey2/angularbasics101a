@@ -1,0 +1,9 @@
+applications:
+- path: .
+  memory: 256M
+  instances: 1
+  domain: eu-gb.mybluemix.net
+  name: angularbasics101a
+  host: angularbasics101a
+  command: node server.js
+  disk_quota: 256M

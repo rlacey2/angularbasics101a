@@ -1,0 +1,187 @@
+    <br/>
+	  
+    Examples of some angular features, shown under the tabs below. In a real applications, the code shown in app.js may be refactored across many files as functionality / complexity increases. Content maybe read from a database/external service using AJAX. Use a UI Bootstrap or similar to make the UI experience richer.
+	<br/> <br/>
+	Available at: <a href="https://github.com/rlacey2/angularbasics101a">https://github.com/rlacey2/angularbasics101a</a>
+	<br/>
+	<br/>
+
+	<div> <!-- this div is needed to wrap the <uib-tabset/>, otherwise there is a controller error -->
+	<uib-tabset>	  
+    <uib-tab index="0" heading="Two-Way Binding">
+    <div>
+		  <br/>
+		 A simple demonstration of using Angular for two-way binding, between the controller code via $scope and the presentation HTML.<br/>
+		 It is important that the $scope prefix is assmumed in HTML inside the 	<strong>&nbsp;&nbsp; &#123;	&#123; yourName	&#125;	&#125; &nbsp;&nbsp;</strong>and the attribute&nbsp;&nbsp;	<strong>ng-model="yourName"	</strong>. 
+		 It is also better to reference an object and its attributes rather than many individual $scope variables when collecting and resetting cohesive data.
+	 <br/>
+	 		<div class="row">
+				<div class="col-md-6">Live<p/>	
+					  <label>Name:</label>
+					  <input type="text" ng-model="yourName" placeholder="Enter a name here">
+					  <hr>
+					  <h1 class="t123">Hello {{yourName}}!</h1>				
+				</div>
+					<div class="col-md-6">HTML<p/>
+						<pre style="display: inline-block;" ng-non-bindable>
+&lt;label&gt;Name:&lt;/label&gt; 
+&lt;input type=&quot;text&quot; ng-model=&quot;yourName&quot; placeholder=&quot;Enter a name here&quot;&gt; 
+&lt;hr&gt;
+&lt;h1&gt;Hello {{yourName}}!&lt;/h1&gt;
+					  
+						</pre>
+				</div>
+			</div> 
+    </div>
+	</uib-tab>	  
+    <uib-tab index="1" heading="Template via directive">
+	 <br/>
+	 Introducing a very simple directive, using as data $scope.person =  {"name": "beta", "email" : "beta@example.com"}; and the directive access this object's attributes/fields to display on the form twice, showing the idea of reusing a directive.
+	 In the code the directive is inserted as 	<strong>&lt;a-directive-template/&gt;	</strong> but is normalised as 	<strong>'aDirectiveTemplate'	</strong> in the code. 	<strong>$scope	</strong> is used in the code, but left out in the HTML.
+	 <br/><br/>
+	 		<div class="row">
+						<div class="col-md-6">Live<p/>
+							<h4>Once</h4>
+							<div a-directive-template></div>  
+						  
+							<h4>Twice</h4>
+							<div a-directive-template></div> 	
+					
+							  <p>
+								  {{modelData}}
+							  </p>							
+						</div>
+						<div class="col-md-6">HTML<p/>
+						<pre style="display: inline-block;" ng-non-bindable>
+	&lt;h4&gt;Once&lt;/h4&gt; 
+	&lt;div a-directive-template&gt;&lt;/div&gt; 
+	
+	&lt;h4&gt;Twice&lt;/h4&gt; 
+	&lt;div a-directive-template&gt;&lt;/div&gt; 
+	&lt;p&gt;
+   		{{modelData}} 
+	&lt;/p&gt;
+						</pre> <br/>
+Code<p/>
+
+<pre ng-non-bindable style="display: inline-block;">	
+myApp.directive('aDirectiveTemplate', [function ( ) { // custom directive
+    return {
+	 
+        template: 'Name: {{person.name}}&lt;br /&gt; email: {{person.email}}'
+    };
+}]);
+</pre>						
+				</div>						
+			</div>			
+	</uib-tab>	   
+    <uib-tab index="2" heading="directive with attributes">
+			 <br/> <br/> 
+				  {{persons}}
+				  
+			<br/>   <br/> The array above as 	<strong>$scope.persons</strong> contains elements representing each representing a person. <strong>ng-repeat</strong> is used to iterate through the array and pass data to a directive that consumes the data. The directive is reused in isolation per person.	  
+			<strong>&lt; person-details /&gt;</strong> is the directive and data is passed via attributes. Directives and Attributes are normalised in angular therefore <strong>person-details</strong> becomes <strong>personDetails</strong>, <strong>reset-method</strong> becomes <strong>resetMethod</strong> which represents a passed in function from the parent controller called HomeCtrl (convention).  
+				  
+				 <p/> 
+			<div class="row">
+						<div class="col-md-6">Live<p/>
+							<div ng-repeat="person in persons"> 
+								<person-details 
+												title="{{$index+1}}" 
+												person="person"
+												reset-method="resetPersons(msg)"
+												>
+							   </person-details> <!-- { msg : 'message string' } in lower directive -->
+							</div>							
+						</div>
+						<div class="col-md-6">HTML<p/>
+							<pre>
+&lt;div ng-repeat=&quot;person in persons&quot;&gt; 
+	&lt;person-details 
+		title=&quot;{{$index+1}}&quot; 
+		person=&quot;person&quot; 
+		reset-method=&quot;resetPersons(msg)&quot; 
+		&gt; 
+	&lt;/person-details&gt; 
+&lt;/div&gt;							
+							</pre>
+	Code						
+							<pre ng-non-bindable style="display: inline-block;">	
+myApp.directive('personDetails', ['$compile', '$templateCache',function ($compile, $templateCache ) { // custom directive
+    
+  	function controllerFunction($scope) {  // initialize scope or set methods etc
+ 
+        $scope.clearPerson = function () // a local function
+        {
+          //  $scope.person = {"name": "", "email" : ""}; // creates a new object and does not as work expected
+              $scope.person.name = "";
+              $scope.person.email = "";            
+         };
+		}  
+    
+	return { // there are other attributes that can be returned
+        restrict: 'E', //E = element, A = attribute, C = class, M = comment         
+        scope: { //@ reads the attribute value, = provides two-way binding, & works with functions
+            title: '@',
+            person: '=',
+            resetP: '&resetMethod'
+            },
+        template: '&lt;hr&gt;&lt;div&gt;{{title}})&lt;br&gt;Name: {{person.name}}&lt;br /&gt; email: {{person.email}}&lt;/div&gt;&lt;input type=&quot;text&quot; ng-model=&quot;person.name&quot;/&gt;&lt;br&gt;&lt;input type=&quot;text&quot; ng-model=&quot;person.email&quot;/&gt;&lt;button ng-click=&quot;clearPerson()&quot;&gt;X&lt;/button&gt;&amp;nbsp;&lt;button ng-click=&quot;resetP({  'Resetting the Person Array' )&quot;&gt;Reset&lt;/button&gt;',        //  templateUrl: 'mytemplate.html', // issues with dynamic refresh etc
+        controller: ['$scope',  controllerFunction],
+        
+        link: function ($scope, element, attrs) // does not require the minification array syntax
+        { 
+            //DOM manipulation tasks
+            //var dynamicHTML = $templateCache.get("....../carddetails.html");
+            //element.html(dynamicHTML);  
+            //$compile(element.contents())(scope); 
+        }       
+    }
+}]);
+							</pre>
+						</div>						
+			</div>     
+	</uib-tab>
+    <uib-tab index="3" heading="nrzLightify">
+	 <br/>
+	 The third party code of <strong>nrzLightify</strong> allows for pop-up messages, that disappear after a specified time.
+	 The snippet of code, shows that for 5000 milliseconds (5 seconds), a message in the passed in variable m is to be displayed or a default is set.
+	 Type can be <strong>'info'</strong>, <strong>'success'</strong>, <strong>'warning'</strong>, <strong>'danger'</strong> representing an appropriate colour for the message.
+	 <br/>
+	 You need to indicate a reference the library at the application level in <strong>app.js</strong> see 'nrzLightify' work correctly.
+	<br/>
+	 		<div class="row">
+				<div class="col-md-6">Live<p/>		
+				
+				<br/>	
+				Click the button many times.
+				<br/>	
+				
+				<button ng-click="resetPersons( 'zzzResetting the Person Array - Demo' )">Reset</button>
+				</div>
+				<div class="col-md-6">Code Fragment<p/>	
+ 
+<pre ng-non-bindable style="display: inline-block;">
+            var msg = m || "Resetting"
+			nrzLightify({
+					type: 'info',
+					text: msg,
+				}, 5000);
+</pre>				
+				</div>	 
+			</div>		
+	  </uib-tab>
+	<uib-tab index="4" heading="EU Cookie Laws">
+		 
+		 This application uses <a href="https://github.com/Palmabit-IT/angular-cookie-law">angular-cookie-law</a> by inserting a directive &lt;cookie-law-banner/&gt;  and &lt;cookie-law-wait/&gt;. Notice that the attributes in the link are normalised versus the directive implementation.
+		 You will need the script and css for the directive to work correctly.
+		 <br>
+		 <a href="https://www.cookielaw.org/the-cookie-law/">The Cookie Law Explained</a> 
+		 <a href="https://www.theverge.com/2017/1/11/14238348/proposed-eu-law-ban-cookie-banners-online-tracking">Proposed EU law could kill cookie banners that no one reads</a>
+		 </uib-tab>
+	<uib-tab index="5" heading="App Folders">
+		  <br>
+		  <img src="/img/app_folders.png" alt="Application folder structure">
+		  </uib-tab>
+	</uib-tabset>	
+	</div>	

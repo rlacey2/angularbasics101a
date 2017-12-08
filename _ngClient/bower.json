@@ -1,0 +1,15 @@
+{
+  "name": "101_a",
+  "version": "1.0.0",
+  "description": "Angular Node 101",
+  "ignore": [
+    ".jshintrc",
+    "**/*.txt"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.1",
+    "bootstrap-notify": "~0.2.0",
+    "jQuery": "^3.1.1"
+  },
+  "devDependencies": {}
+}
